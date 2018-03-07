@@ -39,14 +39,14 @@ private void InsertAllTripDataToDatabase(string connectionString, IEnumerable<Mo
 {
     using (var dbConnection = new MySqlConnection(connectionString))
     {
-        dbConnection.Execute(InsertSql, trips.SelectMany(t => t.TripCollection));
+        dbConnection.Execute(InsertSql, trips.SelectMany(t => t.Trips));
         dbConnection.Close();
     }
 }
 private class MonthlyTrips
 {
     [JsonProperty("trips")]
-    public IEnumerable<Trip> TripCollection { get; set; }
+    public IEnumerable<Trip> Trips { get; set; }
 }
 private class Trip 
 {
