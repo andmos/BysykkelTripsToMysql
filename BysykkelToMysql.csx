@@ -14,7 +14,7 @@ private string InsertSql = @"INSERT INTO trip(start_station_id, start_time, end_
 Stopwatch stopWatch = new Stopwatch();
 Console.WriteLine($"Adding data to database..");
 stopWatch.Start();
-InsertAllTripDataToDatabase(DbConnectionString, ParseAllTripFiles()); 
+InsertAllTripDataToDatabase(DbConnectionString, ParseAllMonthlyTripFiles()); 
 stopWatch.Stop();
 var ts = stopWatch.Elapsed;
 var elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
@@ -24,7 +24,7 @@ var elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
 Console.WriteLine($"RunTime {elapsedTime}");
 
 
-private IEnumerable<MonthlyTrips> ParseAllTripFiles()
+private IEnumerable<MonthlyTrips> ParseAllMonthlyTripFiles()
 {
     var tripDataJsonFiles = Directory.GetFiles(".","trips-*.json", SearchOption.AllDirectories);
     var allTripRecords = new List<MonthlyTrips>(); 
