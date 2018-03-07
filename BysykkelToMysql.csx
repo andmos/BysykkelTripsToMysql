@@ -11,7 +11,18 @@ using System.Net.Http;
 private readonly string DbConnectionString = "server=127.0.0.1;uid=root;pwd=passord1;database=bysykkeldb;";
 private string InsertSql = @"INSERT INTO trip(start_station_id, start_time, end_station_id, end_time)  VALUES(@StartStationId, @StartTime, @EndStationId, @EndTime)";
 
+Stopwatch stopWatch = new Stopwatch();
+Console.WriteLine($"Adding data to database..");
+stopWatch.Start();
 InsertAllTripDataToDatabase(DbConnectionString, ParseAllTripFiles()); 
+stopWatch.Stop();
+var ts = stopWatch.Elapsed;
+var elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            ts.Hours, ts.Minutes, ts.Seconds,
+            ts.Milliseconds / 10);
+
+Console.WriteLine($"RunTime {elapsedTime}");
+
 
 private IEnumerable<Trips> ParseAllTripFiles()
 {
