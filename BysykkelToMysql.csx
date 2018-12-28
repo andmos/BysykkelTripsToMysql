@@ -24,30 +24,26 @@ var elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
 Console.WriteLine($"RunTime {elapsedTime}");
 
 
-private IEnumerable<MonthlyTrips> ParseAllMonthlyTripFiles()
+private IEnumerable<Trip> ParseAllMonthlyTripFiles()
 {
     var tripDataJsonFiles = Directory.GetFiles(".","trips-*.json", SearchOption.AllDirectories);
-    var allTripRecords = new List<MonthlyTrips>(); 
+    var allTripRecords = new List<Trip>(); 
     foreach(var file in tripDataJsonFiles)
     {
-        allTripRecords.Add(JsonConvert.DeserializeObject<MonthlyTrips>(File.ReadAllText(file)));
+        allTripRecords.AddRange(JsonConvert.DeserializeObject<IEnumerable<Trip>>(File.ReadAllText(file)));
     }
     return allTripRecords; 
 }
 
-private void InsertAllTripDataToDatabase(string connectionString, IEnumerable<MonthlyTrips> trips)
+private void InsertAllTripDataToDatabase(string connectionString, IEnumerable<Trip> trips)
 {
     using (var dbConnection = new MySqlConnection(connectionString))
     {
-        dbConnection.Execute(InsertSql, trips.SelectMany(t => t.Trips));
+        dbConnection.Execute(InsertSql, trips);
         dbConnection.Close();
     }
 }
-private class MonthlyTrips
-{
-    [JsonProperty("trips")]
-    public IEnumerable<Trip> Trips { get; set; }
-}
+
 private class Trip 
 {
     [JsonProperty("start_station_name")]
