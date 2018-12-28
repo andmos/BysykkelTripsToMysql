@@ -9,7 +9,7 @@ using Dapper;
 using System.Net.Http; 
 
 private readonly string DbConnectionString = "server=127.0.0.1;uid=root;pwd=passord1;database=bysykkeldb;";
-private string InsertSql = @"INSERT INTO trip(start_station_id, start_time, end_station_id, end_time)  VALUES(@StartStationId, @StartTime, @EndStationId, @EndTime)";
+private string InsertSql = @"INSERT INTO trip(start_station_name, start_station_id, started_at, end_station_name, end_station_id, ended_at, duration)  VALUES(@StartStationName, @StartStationId, @StartTime, @EndStationName, @EndStationId, @EndTime, @Duration)";
 
 Stopwatch stopWatch = new Stopwatch();
 Console.WriteLine($"Adding data to database..");
@@ -50,15 +50,24 @@ private class MonthlyTrips
 }
 private class Trip 
 {
+    [JsonProperty("start_station_name")]
+    public string StartStationName {get; set;}
+
     [JsonProperty("start_station_id")]
     public int StartStationId { get; set; }
     
-    [JsonProperty("start_time")]
+    [JsonProperty("started_at")]
     public DateTime StartTime { get; set; }
     
+    [JsonProperty("end_station_name")]
+    public string EndStationName {get; set;}
+
     [JsonProperty("end_station_id")] 
     public int EndStationId { get; set; }
     
-    [JsonProperty("end_time")]
+    [JsonProperty("ended_at")]
     public DateTime EndTime { get; set; }
+
+    [JsonProperty("duration")]
+    public int Duration {get; set;}
 }
