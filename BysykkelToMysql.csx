@@ -9,7 +9,7 @@ using Dapper;
 using System.Net.Http; 
 
 private readonly string DbConnectionString = "server=127.0.0.1;uid=root;pwd=passord1;database=bysykkeldb;";
-private string InsertSql = @"INSERT INTO trip(start_station_name, start_station_id, started_at, end_station_name, end_station_id, ended_at, duration)  VALUES(@StartStationName, @StartStationId, @StartTime, @EndStationName, @EndStationId, @EndTime, @Duration)";
+private string InsertSql = @"INSERT INTO trip(start_station_name, start_station_id, started_at, end_station_name, end_station_id, ended_at, duration)  VALUES(@StartStationName, @StartStationId, @StartTime, @EndStationName, @EndStationId, @EndTime, @Duration) ON DUPLICATE KEY UPDATE start_station_id = @StartStationId, started_at = @StartTime, end_station_id = @EndStationId, ended_at = @EndTime";
 
 Stopwatch stopWatch = new Stopwatch();
 Console.WriteLine($"Adding data to database..");
